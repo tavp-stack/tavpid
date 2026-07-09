@@ -17,8 +17,8 @@ password, tapi bisa lewat berbagai cara.
 
 ## Requirements
 
-- PHP 8.1+
-- Phalcon 5.x
+- PHP 8.3+
+- Phalcon 5.16+
 - tavp-core
 
 ## Install
