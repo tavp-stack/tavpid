@@ -1,4 +1,4 @@
-﻿{
+{
     "name":  "tavp/tavpid",
     "description":  "TAVPid â€” OTP-first authentication for TAVP (email/SMS/WhatsApp OTP, JWT, OAuth, TOTP).",
     "type":  "library",
