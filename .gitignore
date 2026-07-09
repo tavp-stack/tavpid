@@ -1,0 +1,23 @@
+﻿# Dependencies
+/vendor/
+composer.phar
+
+# Environment
+.env
+.env.backup
+.php-cs-fixer.cache
+
+# Logs
+*.log
+npm-debug.log
+
+# OS / Editor
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+*.swp
+
+# Build
+node_modules/
+dist/
