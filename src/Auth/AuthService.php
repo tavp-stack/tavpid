@@ -7,42 +7,50 @@ namespace Tavp\Tavpid\Auth;
 /**
  * Orchestrates the OTP-first authentication flow.
  *
- * Passwordless by design: request OTP → verify OTP → receive tokens.
+ * Passwordless by design: request OTP → verify OTP → logged in.
  * The user store is injected so TAVPid stays storage-agnostic.
  */
 class AuthService
 {
     public function __construct(
         private OtpService $otpService,
-        private TokenService $tokenService,
         private UserProvider $users,
     ) {
     }
 
-    public function sendOtp(string $identifier, string $channel = 'email'): string
+    /**
+     * Create an OTP for the given identifier.
+     *
+     * @return array{code: string, hash: string, expires_at: int}|null
+     */
+    public function sendOtp(string $identifier, string $channel = 'email'): ?array
     {
         return $this->otpService->createOtp($identifier, $channel);
     }
 
-    public function verifyOtpAndLogin(string $identifier, string $code, string $expectedHash): ?array
+    /**
+     * Verify a submitted OTP against stored data.
+     *
+     * @param array{hash: string, expires_at: int, attempts?: int} $stored
+     */
+    public function verifyOtp(string $code, array $stored): bool
     {
-        if (!$this->otpService->verifyOtp($code, $expectedHash)) {
-            return null;
-        }
-
-        $user = $this->users->findByIdentifier($identifier)
-            ?? $this->users->create($identifier);
-
-        return $this->tokenService->createTokenPair($user->id);
+        return $this->otpService->verifyOtp($code, $stored);
     }
 
-    public function currentUser(string $accessToken): ?object
+    /**
+     * Get the OTP service.
+     */
+    public function otp(): OtpService
     {
-        $payload = $this->tokenService->decode($accessToken);
-        if ($payload === null || ($payload['type'] ?? '') !== 'access') {
-            return null;
-        }
+        return $this->otpService;
+    }
 
-        return $this->users->findById($payload['sub']);
+    /**
+     * Get the user provider.
+     */
+    public function users(): UserProvider
+    {
+        return $this->users;
     }
 }
