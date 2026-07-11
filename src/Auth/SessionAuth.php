@@ -112,6 +112,14 @@ class SessionAuth
     }
 
     /**
+     * Clear the pending OTP session.
+     */
+    public function clearPending(): void
+    {
+        unset($_SESSION['tavpid_otp']);
+    }
+
+    /**
      * Log the user out.
      */
     public function logout(): void
