@@ -20,6 +20,11 @@ class AccessControl
     private array $roles = [];
 
     /**
+     * @var array<string, string> email => role
+     */
+    private array $userRoles = [];
+
+    /**
      * Define a role and the permissions it grants.
      *
      * @param string[] $permissions
@@ -27,6 +32,14 @@ class AccessControl
     public function defineRole(string $role, array $permissions): void
     {
         $this->roles[$role] = $permissions;
+    }
+
+    /**
+     * Set a user's role by email.
+     */
+    public function setUserRole(string $email, string $role): void
+    {
+        $this->userRoles[strtolower(trim($email))] = $role;
     }
 
     /**
@@ -120,7 +133,7 @@ class AccessControl
      */
     public function role(string $email): string
     {
-        return $this->roles[strtolower(trim($email))] ?? 'editor';
+        return $this->userRoles[strtolower(trim($email))] ?? 'editor';
     }
 
     /**
