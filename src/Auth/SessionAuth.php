@@ -57,7 +57,8 @@ class SessionAuth
         $otp['attempts'] = ($otp['attempts'] ?? 0) + 1;
         $_SESSION['tavpid_otp'] = $otp;
 
-        if (!$this->auth->verifyOtpAndLogin($otp['identifier'], $code, $otp)) {
+        // Verify the OTP code.
+        if (!$this->auth->verifyOtp($code, $otp)) {
             return false;
         }
 

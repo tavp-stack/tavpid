@@ -116,6 +116,14 @@ class AccessControl
     }
 
     /**
+     * Get the role for an email.
+     */
+    public function role(string $email): string
+    {
+        return $this->roles[strtolower(trim($email))] ?? 'editor';
+    }
+
+    /**
      * Check if a pattern matches a permission.
      *
      * "content.*" matches "content.create"
